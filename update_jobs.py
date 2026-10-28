@@ -23,7 +23,7 @@ ROOT = Path(__file__).parent
 CONFIG = json.loads((ROOT / "companies.json").read_text())
 DATA_PATH = ROOT / "docs" / "jobs.json"
 
-MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.8-flash")
+MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.6-flash")
 # Free tier allows only a few requests per minute, so score a few jobs per run and pause between calls.
 MAX_SCORE_PER_RUN = int(os.environ.get("MAX_SCORE_PER_RUN", "20"))
 SLEEP_SECONDS = float(os.environ.get("SLEEP_SECONDS", "13"))
@@ -202,7 +202,7 @@ def score_job(api_key, resume, job):
     body = {
         "system_instruction": {"parts": [{"text": SYSTEM}]},
         "contents": [{"role": "user", "parts": [{"text": user}]}],
-        "generationConfig": {"temperature": 0, "maxOutputTokens": 1024, "responseMimeType": "application/json"},
+        "generationConfig": {"temperature": 0, "maxOutputTokens": 2048, "responseMimeType": "application/json"},
     }
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent"
     for attempt in range(4):
