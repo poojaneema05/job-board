@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 """Hourly job updater for the jobs page.
 
-Fetch jobs -> cheap title/location filter -> score NEW jobs with Claude -> write docs/jobs.json.
+Fetch jobs -> cheap title/location filter -> score NEW jobs with Gemini -> write docs/jobs.json.
 Jobs already scored are not scored again. Jobs not seen for KEEP_DAYS days are dropped.
 
 Usage:
   python update_jobs.py             # normal run
-  python update_jobs.py --dry-run   # fetch + filter only; no Claude calls, no file written
+  python update_jobs.py --dry-run   # fetch + filter only; no Gemini calls, no file written
 """
 import html
 import json
 import os
 import re
 import sys
+import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -22,8 +23,10 @@ ROOT = Path(__file__).parent
 CONFIG = json.loads((ROOT / "companies.json").read_text())
 DATA_PATH = ROOT / "docs" / "jobs.json"
 
-MODEL = os.environ.get("CLAUDE_MODEL", "claude-sonnet-5-5")
-MAX_SCORE_PER_RUN = int(os.environ.get("MAX_SCORE_PER_RUN", "60"))
+MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+# Free tier allows only a few requests per minute, so score a few jobs per run and pause between calls.
+MAX_SCORE_PER_RUN = int(os.environ.get("MAX_SCORE_PER_RUN", "20"))
+SLEEP_SECONDS = float(os.environ.get("SLEEP_SECONDS", "13"))
 KEEP_DAYS = int(os.environ.get("KEEP_DAYS", "2"))
 HEADERS = {"User-Agent": "personal-job-page/1.0"}
 
@@ -47,7 +50,7 @@ def title_ok(job):
 def location_ok(job):
     loc = (job.get("location") or "").lower()
     if not loc:
-        return True  # unknown location: let Claude judge from the description
+        return True  # unknown location: let Gemini judge from the description
     return any(k.lower() in loc for k in CONFIG.get("locations", []))
 
 
@@ -170,9 +173,10 @@ Reply with ONLY a JSON object: {"score": <int>, "reason": "<one short sentence, 
 
 
 def make_client():
-    import anthropic  # imported lazily so --dry-run works without the SDK
-
-    return anthropic.Anthropic()
+    key = os.environ.get("GEMINI_API_KEY")
+    if not key:
+        raise SystemExit("GEMINI_API_KEY is not set.")
+    return key
 
 
 def get_resume():
@@ -185,19 +189,29 @@ def get_resume():
     raise SystemExit("No resume found. Set the RESUME_TEXT secret or add resume.txt.")
 
 
-def score_job(client, resume, job):
+def score_job(api_key, resume, job):
     user = (
         f"RESUME:\n{resume}\n\n---\nJOB POSTING\n"
         f"Company: {job['company']}\nTitle: {job['title']}\nLocation: {job['location']}\n"
         f"Description: {job['description']}"
     )
-    msg = client.messages.create(
-        model=MODEL,
-        max_tokens=300,
-        system=SYSTEM,
-        messages=[{"role": "user", "content": user}],
-    )
-    text = "".join(b.text for b in msg.content if getattr(b, "type", "") == "text")
+    body = {
+        "system_instruction": {"parts": [{"text": SYSTEM}]},
+        "contents": [{"role": "user", "parts": [{"text": user}]}],
+        "generationConfig": {"temperature": 0, "maxOutputTokens": 1024, "responseMimeType": "application/json"},
+    }
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent"
+    for attempt in range(4):
+        r = requests.post(url, headers={"x-goog-api-key": api_key}, json=body, timeout=60)
+        if r.status_code in (429, 500, 503):  # rate limited or busy: wait and retry
+            time.sleep(20 * (attempt + 1))
+            continue
+        r.raise_for_status()
+        break
+    else:
+        raise RuntimeError("Gemini kept returning rate-limit or server errors")
+    parts = r.json()["candidates"][0]["content"]["parts"]
+    text = "".join(p.get("text", "") for p in parts)
     data = json.loads(re.search(r"\{.*\}", text, re.S).group(0))
     return max(0, min(100, int(data["score"]))), str(data.get("reason", ""))[:200]
 
@@ -246,6 +260,7 @@ def main():
             except Exception as exc:
                 print(f"  scoring failed for {j['title']}: {exc}")
                 continue  # retried next hour
+            time.sleep(SLEEP_SECONDS)
             cache[j["id"]] = {
                 "id": j["id"], "company": j["company"], "title": j["title"],
                 "location": j["location"], "url": j["url"], "score": score,
