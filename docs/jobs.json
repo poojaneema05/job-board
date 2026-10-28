@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-28T12:42:28Z",
+ "updated": "2026-10-28T18:48:43Z",
  "jobs": [
   {
    "id": "gh:airbnb:8238604",
@@ -10,7 +10,29 @@
    "score": 52,
    "reason": "Strong marketplace engineering leadership and location fit, but role requires core ML, data, and backend platform engineering management.",
    "first_seen": "2026-10-28T12:42:28Z",
-   "last_seen": "2026-10-28T12:42:28Z"
+   "last_seen": "2026-10-28T18:48:43Z"
+  },
+  {
+   "id": "gh:airbnb:8238592",
+   "company": "Airbnb",
+   "title": "Senior Staff Engineer, Guest & Host (Host Listings & Quality)",
+   "location": "United States",
+   "url": "https://careers.airbnb.com/positions/8238592?gh_jid=8238592",
+   "score": 38,
+   "reason": "Role is a backend Staff Software Engineer position (Java/distributed systems), not a Quality Engineering leadership role.",
+   "first_seen": "2026-10-28T18:48:43Z",
+   "last_seen": "2026-10-28T18:48:43Z"
+  },
+  {
+   "id": "gh:airbnb:8207095",
+   "company": "Airbnb",
+   "title": "Staff Advanced Analytics, Community Blueprint & Quality",
+   "location": "United States",
+   "url": "https://careers.airbnb.com/positions/8207095?gh_jid=8207095",
+   "score": 30,
+   "reason": "The role requires advanced data science, causal inference, and product analytics expertise, which mismatches the candidate's quality engineering background.",
+   "first_seen": "2026-10-28T18:48:43Z",
+   "last_seen": "2026-10-28T18:48:43Z"
   }
  ]
 }
