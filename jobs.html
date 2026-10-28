@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QA Leadership Job Board | Pooja Neema</title>
+<style>
+  :root {
+    --bg: #f6f7fb; --card: #ffffff; --text: #1d2433; --muted: #5d667a; --line: #e3e6ee;
+    --accent1: #6a5cff; --accent2: #ff6ab0; --good: #12805c; --new: #d9480f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #12141c; --card: #1b1e29; --text: #eceff7; --muted: #9aa3b8; --line: #2c3142; --good: #4fd1a1; --new: #ff9a62; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); }
+  header { background: linear-gradient(120deg, var(--accent1), var(--accent2)); color: #fff; padding: 36px 20px 30px; }
+  header .wrap, main { max-width: 1100px; margin: 0 auto; }
+  h1 { margin: 0 0 6px; font-size: 1.8rem; }
+  header p { margin: 0; opacity: .92; }
+  main { padding: 20px; }
+  .bar { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-bottom: 14px; }
+  .bar input[type=search] { flex: 1 1 220px; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--card); color: var(--text); font-size: 1rem; }
+  .bar label { color: var(--muted); font-size: .9rem; display: flex; align-items: center; gap: 8px; }
+  .meta { color: var(--muted); font-size: .9rem; margin-bottom: 10px; }
+  .scroll { overflow-x: auto; background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+  table { border-collapse: collapse; width: 100%; min-width: 760px; }
+  th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { cursor: pointer; font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); white-space: nowrap; user-select: none; }
+  tr:last-child td { border-bottom: none; }
+  a { color: var(--accent1); font-weight: 600; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .score { font-weight: 700; color: var(--good); }
+  .why { color: var(--muted); font-size: .85rem; margin-top: 3px; }
+  .new { color: var(--new); font-weight: 700; font-size: .75rem; margin-left: 6px; }
+  .empty { padding: 28px; text-align: center; color: var(--muted); }
+  footer { color: var(--muted); font-size: .8rem; text-align: center; padding: 20px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>QA Leadership Job Board</h1>
+    <p>Director, Head, Manager, and Staff quality roles, refreshed hourly and scored against my background.</p>
+  </div>
+</header>
+<main>
+  <div class="bar">
+    <input id="q" type="search" placeholder="Search company, title, or location" aria-label="Search jobs">
+    <label>Minimum match <input id="min" type="range" min="0" max="100" value="60"> <strong id="minval">60</strong></label>
+  </div>
+  <div class="meta" id="meta">Loading...</div>
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr>
+          <th data-k="score">Match</th><th data-k="company">Company</th><th data-k="title">Title</th>
+          <th data-k="location">Location</th><th data-k="first_seen">First seen</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="empty" id="empty" hidden>No jobs match these filters.</div>
+  </div>
+</main>
+<footer>Match scores are automated estimates. Always read the full posting.</footer>
+<script>
+(function () {
+  var jobs = [], sortKey = "score", sortDir = -1;
+  var $ = function (id) { return document.getElementById(id); };
+  var TZ = "America/Los_Angeles";
+
+  function safeUrl(u) { return /^https?:\/\//i.test(u || "") ? u : "#"; }
+  function fmtDate(s) { return new Date(s).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: TZ }); }
+  function isNew(s) { return Date.now() - new Date(s).getTime() < 24 * 3600 * 1000; }
+
+  function cell(text) { var td = document.createElement("td"); td.textContent = text; return td; }
+
+  function render() {
+    var q = $("q").value.trim().toLowerCase(), min = +$("min").value;
+    $("minval").textContent = min;
+    var list = jobs.filter(function (j) {
+      return j.score >= min && (!q || (j.company + " " + j.title + " " + j.location).toLowerCase().indexOf(q) > -1);
+    });
+    list.sort(function (a, b) {
+      var x = a[sortKey], y = b[sortKey];
+      if (typeof x === "string") { x = x.toLowerCase(); y = y.toLowerCase(); }
+      return (x < y ? -1 : x > y ? 1 : 0) * sortDir;
+    });
+    var tb = $("rows"); tb.textContent = "";
+    list.forEach(function (j) {
+      var tr = document.createElement("tr");
+      var s = cell(j.score); s.className = "score"; tr.appendChild(s);
+      tr.appendChild(cell(j.company));
+      var t = document.createElement("td");
+      var a = document.createElement("a");
+      a.href = safeUrl(j.url); a.target = "_blank"; a.rel = "noopener noreferrer"; a.textContent = j.title;
+      t.appendChild(a);
+      if (isNew(j.first_seen)) { var n = document.createElement("span"); n.className = "new"; n.textContent = "NEW"; t.appendChild(n); }
+      if (j.reason) { var w = document.createElement("div"); w.className = "why"; w.textContent = j.reason; t.appendChild(w); }
+      tr.appendChild(t);
+      tr.appendChild(cell(j.location || "Not listed"));
+      tr.appendChild(cell(fmtDate(j.first_seen)));
+      tb.appendChild(tr);
+    });
+    $("empty").hidden = list.length > 0;
+    $("meta").textContent = list.length + " jobs shown" + (window.__updated ? " | Last updated " + window.__updated : "");
+  }
+
+  document.querySelectorAll("th").forEach(function (th) {
+    th.addEventListener("click", function () {
+      var k = th.getAttribute("data-k");
+      if (sortKey === k) sortDir = -sortDir; else { sortKey = k; sortDir = (k === "score" || k === "first_seen") ? -1 : 1; }
+      render();
+    });
+  });
+  $("q").addEventListener("input", render);
+  $("min").addEventListener("input", render);
+
+  fetch("jobs.json", { cache: "no-store" })
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      jobs = d.jobs || [];
+      window.__updated = d.updated
+        ? new Date(d.updated).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short", timeZone: TZ }) + " PT"
+        : "";
+      render();
+    })
+    .catch(function () { $("meta").textContent = "Could not load jobs. Please refresh."; });
+})();
+</script>
+</body>
+</html>
