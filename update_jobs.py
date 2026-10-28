@@ -23,7 +23,7 @@ ROOT = Path(__file__).parent
 CONFIG = json.loads((ROOT / "companies.json").read_text())
 DATA_PATH = ROOT / "docs" / "jobs.json"
 
-MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.8-flash")
 # Free tier allows only a few requests per minute, so score a few jobs per run and pause between calls.
 MAX_SCORE_PER_RUN = int(os.environ.get("MAX_SCORE_PER_RUN", "20"))
 SLEEP_SECONDS = float(os.environ.get("SLEEP_SECONDS", "13"))
@@ -78,7 +78,8 @@ def get_json(url, **kwargs):
 
 # ---------- sources ----------
 def fetch_greenhouse(token):
-    data = get_json(f"https://boards-api.greenhouse.io/v1/boards/{token}/jobs", params={"content": "true"})
+    data = get_json(
+        f"https://boards-api.greenhouse.io/v1/boards/{token}/jobs", params={"content": "true"})
     for j in (data or {}).get("jobs", []):
         yield {
             "id": f"gh:{token}:{j['id']}",
@@ -91,7 +92,8 @@ def fetch_greenhouse(token):
 
 
 def fetch_lever(name):
-    data = get_json(f"https://api.lever.co/v0/postings/{name}", params={"mode": "json"})
+    data = get_json(
+        f"https://api.lever.co/v0/postings/{name}", params={"mode": "json"})
     for j in data or []:
         yield {
             "id": f"lv:{name}:{j['id']}",
@@ -120,7 +122,8 @@ def fetch_ashby(name):
 
 
 def fetch_adzuna():
-    app_id, app_key = os.environ.get("ADZUNA_APP_ID"), os.environ.get("ADZUNA_APP_KEY")
+    app_id, app_key = os.environ.get(
+        "ADZUNA_APP_ID"), os.environ.get("ADZUNA_APP_KEY")
     if not (app_id and app_key):
         return
     for query in CONFIG.get("adzuna_queries", []):
@@ -186,7 +189,8 @@ def get_resume():
     path = ROOT / "resume.txt"
     if path.exists():
         return path.read_text()
-    raise SystemExit("No resume found. Set the RESUME_TEXT secret or add resume.txt.")
+    raise SystemExit(
+        "No resume found. Set the RESUME_TEXT secret or add resume.txt.")
 
 
 def score_job(api_key, resume, job):
@@ -202,7 +206,8 @@ def score_job(api_key, resume, job):
     }
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent"
     for attempt in range(4):
-        r = requests.post(url, headers={"x-goog-api-key": api_key}, json=body, timeout=60)
+        r = requests.post(
+            url, headers={"x-goog-api-key": api_key}, json=body, timeout=60)
         if r.status_code in (429, 500, 503):  # rate limited or busy: wait and retry
             time.sleep(20 * (attempt + 1))
             continue
@@ -242,14 +247,16 @@ def main():
     to_score = []
     for j in live:
         if j["id"] in cache:
-            cache[j["id"]].update(last_seen=iso(now), url=j["url"], title=j["title"], location=j["location"])
+            cache[j["id"]].update(last_seen=iso(
+                now), url=j["url"], title=j["title"], location=j["location"])
         else:
             to_score.append(j)
     print(f"{len(live)} matching postings, {len(to_score)} new to score")
 
     if dry:
         for j in to_score:
-            print(f"- {j['company']} | {j['title']} | {j['location']} | {j['url']}")
+            print(
+                f"- {j['company']} | {j['title']} | {j['location']} | {j['url']}")
         return
 
     if to_score:
@@ -270,7 +277,8 @@ def main():
     cutoff = now - timedelta(days=KEEP_DAYS)
     jobs = [j for j in cache.values() if parse(j["last_seen"]) >= cutoff]
     jobs.sort(key=lambda j: (j["score"], j["first_seen"]), reverse=True)
-    DATA_PATH.write_text(json.dumps({"updated": iso(now), "jobs": jobs}, indent=1))
+    DATA_PATH.write_text(json.dumps(
+        {"updated": iso(now), "jobs": jobs}, indent=1))
     print(f"Wrote {len(jobs)} jobs")
 
 
