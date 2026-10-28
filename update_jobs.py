@@ -231,6 +231,7 @@ def parse(s):
 
 
 def main():
+    print("Starting job update...", flush=True)
     dry = "--dry-run" in sys.argv
     now = datetime.now(timezone.utc)
     stored = json.loads(DATA_PATH.read_text()) if DATA_PATH.exists() else {}
