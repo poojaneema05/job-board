@@ -32,33 +32,30 @@ KEEP_DAYS = int(os.environ.get("KEEP_DAYS", "2"))
 HEADERS = {"User-Agent": "personal-job-page/1.0"}
 
 # ---------- filters ----------
-# Only these titles are kept:
-#   Director / Senior Manager / Manager + QA, quality engineering, or quality assurance
-#   Principal / Staff / Lead + QA, SDET, quality engineering, or quality assurance
-QA_FIELD = re.compile(r"\b(qa|quality assurance|quality engineering)\b", re.I)
-SDET_FIELD = re.compile(r"\bsdet\b", re.I)
-# also covers "Senior Manager"
-MANAGER_LEVEL = re.compile(r"\b(director|manager)\b", re.I)
-IC_LEVEL = re.compile(r"\b(principal|staff|lead)\b", re.I)
+# Loose title filter: keep anything QA, quality, or test related at any level, and let the
+# match score decide. It only skips obviously unrelated or junior roles to save Gemini quota.
+TITLE_FIELD = re.compile(
+    r"\b(qa|sdet|quality|testing|test|automation)\b", re.I)
 TITLE_EXCLUDE = re.compile(
-    r"\b(intern|junior|jr\.?|entry|analyst|technician|gmp|clinical|supplier|"
+    r"\b(intern|internship|junior|jr\.?|entry|analyst|technician|gmp|clinical|supplier|"
     r"manufactur\w*|pharma\w*|laborator\w*|food safety|civil|"
-    r"product|program|gtm|customer|sales|marketing|finance|p2p|ads|ranking|"
-    r"compliance|legal|recruit\w*|support|account|partner)\b",
+    r"product|gtm|customer|sales|marketing|finance|p2p|ads|ranking|"
+    r"legal|recruit\w*|account|partner)\b",
     re.I,
+)
+SENIOR_HINT = re.compile(
+    r"\b(director|head|vp|vice president|manager|principal|staff|lead|architect)\b", re.I
 )
 
 
 def title_ok(job):
     t = job["title"]
-    if TITLE_EXCLUDE.search(t):
-        return False
-    has_qa = bool(QA_FIELD.search(t))
-    if MANAGER_LEVEL.search(t) and has_qa:
-        return True
-    if IC_LEVEL.search(t) and (has_qa or SDET_FIELD.search(t)):
-        return True
-    return False
+    return bool(TITLE_FIELD.search(t) and not TITLE_EXCLUDE.search(t))
+
+
+def priority(job):
+    """Senior-looking titles are scored first, since the free tier limits how many we can score."""
+    return 0 if SENIOR_HINT.search(job["title"]) else 1
 
 
 def location_ok(job):
@@ -271,6 +268,7 @@ def main():
         else:
             to_score.append(j)
     print(f"{len(live)} matching postings, {len(to_score)} new to score")
+    to_score.sort(key=priority)
 
     if dry:
         for j in to_score:
