@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-29T03:38:30Z",
+ "updated": "2026-10-29T05:38:39Z",
  "jobs": [
   {
    "id": "gh:coinbase:8241748",
@@ -10,7 +10,7 @@
    "score": 75,
    "reason": "Strong QE leadership and automation skills, but the role is an IC senior software engineer position.",
    "first_seen": "2026-10-29T03:38:30Z",
-   "last_seen": "2026-10-29T03:38:30Z"
+   "last_seen": "2026-10-29T05:38:39Z"
   },
   {
    "id": "gh:doordashusa:8202736",
@@ -21,7 +21,7 @@
    "score": 75,
    "reason": "Strong match on quality engineering infrastructure and leadership, though the role leans slightly more software engineering tooling/platform than executive QE leadership.",
    "first_seen": "2026-10-29T03:38:30Z",
-   "last_seen": "2026-10-29T03:38:30Z"
+   "last_seen": "2026-10-29T05:38:39Z"
   },
   {
    "id": "gh:coinbase:8241752",
@@ -32,7 +32,7 @@
    "score": 75,
    "reason": "Strong QE leadership and mobile experience, but role requires heavy hands-on Swift/Kotlin coding as a Staff IC.",
    "first_seen": "2026-10-29T03:21:34Z",
-   "last_seen": "2026-10-29T03:38:30Z"
+   "last_seen": "2026-10-29T05:38:39Z"
   },
   {
    "id": "gh:coinbase:7964410",
@@ -43,7 +43,7 @@
    "score": 74,
    "reason": "Strong QE leadership and AI testing experience, but the role leans more toward developer infrastructure and software engineering in Go.",
    "first_seen": "2026-10-29T03:38:30Z",
-   "last_seen": "2026-10-29T03:38:30Z"
+   "last_seen": "2026-10-29T05:38:39Z"
   },
   {
    "id": "gh:affirm:7727320003",
@@ -54,7 +54,7 @@
    "score": 58,
    "reason": "The candidate is heavily overqualified as an executive QE leader applying for a mid-level IC software engineer role.",
    "first_seen": "2026-10-29T03:38:30Z",
-   "last_seen": "2026-10-29T03:38:30Z"
+   "last_seen": "2026-10-29T05:38:39Z"
   },
   {
    "id": "gh:airbnb:8238604",
@@ -65,7 +65,7 @@
    "score": 52,
    "reason": "Strong marketplace engineering leadership and location fit, but role requires core ML, data, and backend platform engineering management.",
    "first_seen": "2026-10-28T12:42:28Z",
-   "last_seen": "2026-10-29T03:38:30Z"
+   "last_seen": "2026-10-29T05:38:39Z"
   },
   {
    "id": "gh:databricks:8295792002",
@@ -76,7 +76,7 @@
    "score": 45,
    "reason": "The role requires deep ML and search ranking engineering, whereas the candidate is a Quality Engineering leader.",
    "first_seen": "2026-10-29T03:38:30Z",
-   "last_seen": "2026-10-29T03:38:30Z"
+   "last_seen": "2026-10-29T05:38:39Z"
   },
   {
    "id": "gh:stripe:8127182",
@@ -87,7 +87,7 @@
    "score": 45,
    "reason": "Role is for a backend software engineer, not a quality engineering leader.",
    "first_seen": "2026-10-29T03:38:30Z",
-   "last_seen": "2026-10-29T03:38:30Z"
+   "last_seen": "2026-10-29T05:38:39Z"
   },
   {
    "id": "gh:databricks:8829047002",
@@ -98,7 +98,7 @@
    "score": 45,
    "reason": "Candidate is an executive QE leader, whereas this role is an individual contributor IT automation engineering position.",
    "first_seen": "2026-10-29T03:38:30Z",
-   "last_seen": "2026-10-29T03:38:30Z"
+   "last_seen": "2026-10-29T05:38:39Z"
   },
   {
    "id": "gh:affirm:7727322003",
@@ -109,7 +109,7 @@
    "score": 45,
    "reason": "The role is a mid-level IC backend engineering position, whereas the candidate is a senior QE leader.",
    "first_seen": "2026-10-29T03:38:30Z",
-   "last_seen": "2026-10-29T03:38:30Z"
+   "last_seen": "2026-10-29T05:38:39Z"
   },
   {
    "id": "gh:airbnb:8238592",
@@ -120,7 +120,7 @@
    "score": 38,
    "reason": "Role is a backend Staff Software Engineer position (Java/distributed systems), not a Quality Engineering leadership role.",
    "first_seen": "2026-10-28T18:48:43Z",
-   "last_seen": "2026-10-29T03:38:30Z"
+   "last_seen": "2026-10-29T05:38:39Z"
   },
   {
    "id": "gh:stripe:8314235",
@@ -131,7 +131,7 @@
    "score": 35,
    "reason": "The role is for a backend software engineer in Go, whereas the candidate is a senior QE leader.",
    "first_seen": "2026-10-29T03:38:30Z",
-   "last_seen": "2026-10-29T03:38:30Z"
+   "last_seen": "2026-10-29T05:38:39Z"
   },
   {
    "id": "gh:coinbase:8054055",
@@ -142,7 +142,7 @@
    "score": 35,
    "reason": "Role is an IC IT automation/systems engineering position in India, whereas the candidate is a senior QE leader in the US.",
    "first_seen": "2026-10-29T03:38:30Z",
-   "last_seen": "2026-10-29T03:38:30Z"
+   "last_seen": "2026-10-29T05:38:39Z"
   },
   {
    "id": "gh:doordashusa:8171815",
@@ -153,7 +153,7 @@
    "score": 35,
    "reason": "Candidate is an executive-level QE leader, whereas this role focuses on operational robotics and autonomous systems testing.",
    "first_seen": "2026-10-29T03:38:30Z",
-   "last_seen": "2026-10-29T03:38:30Z"
+   "last_seen": "2026-10-29T05:38:39Z"
   },
   {
    "id": "gh:airbnb:8207095",
@@ -164,7 +164,7 @@
    "score": 30,
    "reason": "The role requires advanced data science, causal inference, and product analytics expertise, which mismatches the candidate's quality engineering background.",
    "first_seen": "2026-10-28T18:48:43Z",
-   "last_seen": "2026-10-29T03:38:30Z"
+   "last_seen": "2026-10-29T05:38:39Z"
   },
   {
    "id": "gh:pinterest:8258175",
@@ -186,7 +186,7 @@
    "score": 25,
    "reason": "The candidate is a technical Quality Engineering leader, whereas this role focuses on regulatory compliance testing and auditing.",
    "first_seen": "2026-10-29T03:38:30Z",
-   "last_seen": "2026-10-29T03:38:30Z"
+   "last_seen": "2026-10-29T05:38:39Z"
   },
   {
    "id": "gh:reddit:8074860",
@@ -197,7 +197,7 @@
    "score": 25,
    "reason": "Candidate is a QE leader, but this role is an internal audit and SOX compliance position.",
    "first_seen": "2026-10-29T03:38:30Z",
-   "last_seen": "2026-10-29T03:38:30Z"
+   "last_seen": "2026-10-29T05:38:39Z"
   },
   {
    "id": "gh:machinifyinc:4259840009",
@@ -208,7 +208,7 @@
    "score": 15,
    "reason": "Candidate is a software QE leader, whereas this role is a medical/outpatient coding validation specialist requiring AHIMA/AAPC certifications.",
    "first_seen": "2026-10-29T03:38:30Z",
-   "last_seen": "2026-10-29T03:38:30Z"
+   "last_seen": "2026-10-29T05:38:39Z"
   },
   {
    "id": "gh:reddit:8074846",
@@ -219,7 +219,7 @@
    "score": 15,
    "reason": "The role is in internal audit, compliance, and SOX testing, which does not match a software quality engineering leadership background.",
    "first_seen": "2026-10-29T03:38:30Z",
-   "last_seen": "2026-10-29T03:38:30Z"
+   "last_seen": "2026-10-29T05:38:39Z"
   },
   {
    "id": "gh:anthropic:5383714008",
@@ -230,7 +230,7 @@
    "score": 15,
    "reason": "The candidate is a software quality engineering leader, whereas this role is an AV infrastructure and hardware systems engineering position.",
    "first_seen": "2026-10-29T03:38:30Z",
-   "last_seen": "2026-10-29T03:38:30Z"
+   "last_seen": "2026-10-29T05:38:39Z"
   },
   {
    "id": "gh:doordashusa:8082005",
@@ -241,7 +241,7 @@
    "score": 5,
    "reason": "The candidate is a software quality engineering leader, whereas this role is for a physical flight test engineer for delivery drones.",
    "first_seen": "2026-10-29T03:38:30Z",
-   "last_seen": "2026-10-29T03:38:30Z"
+   "last_seen": "2026-10-29T05:38:39Z"
   }
  ]
 }
