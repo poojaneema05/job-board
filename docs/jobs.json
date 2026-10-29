@@ -1,6 +1,28 @@
 {
- "updated": "2026-10-29T03:21:34Z",
+ "updated": "2026-10-29T03:38:30Z",
  "jobs": [
+  {
+   "id": "gh:coinbase:8241748",
+   "company": "Coinbase",
+   "title": "Senior Software Engineer, Mobile QA",
+   "location": "Remote - USA",
+   "url": "https://www.coinbase.com/careers/positions/8241748?gh_jid=8241748",
+   "score": 75,
+   "reason": "Strong QE leadership and automation skills, but the role is an IC senior software engineer position.",
+   "first_seen": "2026-10-29T03:38:30Z",
+   "last_seen": "2026-10-29T03:38:30Z"
+  },
+  {
+   "id": "gh:doordashusa:8202736",
+   "company": "DoorDash",
+   "title": "Software Engineer, Code Quality",
+   "location": "San Francisco, CA; Seattle, WA; New York, NY; Los Angeles, CA",
+   "url": "https://job-boards.greenhouse.io/doordashusa/jobs/8202736",
+   "score": 75,
+   "reason": "Strong match on quality engineering infrastructure and leadership, though the role leans slightly more software engineering tooling/platform than executive QE leadership.",
+   "first_seen": "2026-10-29T03:38:30Z",
+   "last_seen": "2026-10-29T03:38:30Z"
+  },
   {
    "id": "gh:coinbase:8241752",
    "company": "Coinbase",
@@ -10,7 +32,29 @@
    "score": 75,
    "reason": "Strong QE leadership and mobile experience, but role requires heavy hands-on Swift/Kotlin coding as a Staff IC.",
    "first_seen": "2026-10-29T03:21:34Z",
-   "last_seen": "2026-10-29T03:21:34Z"
+   "last_seen": "2026-10-29T03:38:30Z"
+  },
+  {
+   "id": "gh:coinbase:7964410",
+   "company": "Coinbase",
+   "title": "Staff Software Engineer, Developer Infrastructure (Test Infrastructure)",
+   "location": "Remote - USA",
+   "url": "https://www.coinbase.com/careers/positions/7964410?gh_jid=7964410",
+   "score": 74,
+   "reason": "Strong QE leadership and AI testing experience, but the role leans more toward developer infrastructure and software engineering in Go.",
+   "first_seen": "2026-10-29T03:38:30Z",
+   "last_seen": "2026-10-29T03:38:30Z"
+  },
+  {
+   "id": "gh:affirm:7727320003",
+   "company": "Affirm",
+   "title": "Software Engineer II, Backend (Test Infra)",
+   "location": "Remote US",
+   "url": "https://job-boards.greenhouse.io/affirm/jobs/7727320003",
+   "score": 58,
+   "reason": "The candidate is heavily overqualified as an executive QE leader applying for a mid-level IC software engineer role.",
+   "first_seen": "2026-10-29T03:38:30Z",
+   "last_seen": "2026-10-29T03:38:30Z"
   },
   {
    "id": "gh:airbnb:8238604",
@@ -21,7 +65,51 @@
    "score": 52,
    "reason": "Strong marketplace engineering leadership and location fit, but role requires core ML, data, and backend platform engineering management.",
    "first_seen": "2026-10-28T12:42:28Z",
-   "last_seen": "2026-10-28T23:08:30Z"
+   "last_seen": "2026-10-29T03:38:30Z"
+  },
+  {
+   "id": "gh:databricks:8295792002",
+   "company": "Databricks",
+   "title": "Staff Software Engineer, Search Quality",
+   "location": "Mountain View, California",
+   "url": "https://databricks.com/company/careers/open-positions/job?gh_jid=8295792002",
+   "score": 45,
+   "reason": "The role requires deep ML and search ranking engineering, whereas the candidate is a Quality Engineering leader.",
+   "first_seen": "2026-10-29T03:38:30Z",
+   "last_seen": "2026-10-29T03:38:30Z"
+  },
+  {
+   "id": "gh:stripe:8127182",
+   "company": "Stripe",
+   "title": "Software Engineer, Revenue and Financial Automation",
+   "location": "San Francisco, New York City, Seattle, Chicago, US-Remote",
+   "url": "https://stripe.com/jobs/search?gh_jid=8127182",
+   "score": 45,
+   "reason": "Role is for a backend software engineer, not a quality engineering leader.",
+   "first_seen": "2026-10-29T03:38:30Z",
+   "last_seen": "2026-10-29T03:38:30Z"
+  },
+  {
+   "id": "gh:databricks:8829047002",
+   "company": "Databricks",
+   "title": "Sr. Automation Engineer - IT Asset Management",
+   "location": "Bellevue, Washington; Mountain View, California; San Francisco, California; Seattle, Washington",
+   "url": "https://databricks.com/company/careers/open-positions/job?gh_jid=8829047002",
+   "score": 45,
+   "reason": "Candidate is an executive QE leader, whereas this role is an individual contributor IT automation engineering position.",
+   "first_seen": "2026-10-29T03:38:30Z",
+   "last_seen": "2026-10-29T03:38:30Z"
+  },
+  {
+   "id": "gh:affirm:7727322003",
+   "company": "Affirm",
+   "title": "Software Engineer II, Backend (Test Infra)",
+   "location": "Remote Canada",
+   "url": "https://job-boards.greenhouse.io/affirm/jobs/7727322003",
+   "score": 45,
+   "reason": "The role is a mid-level IC backend engineering position, whereas the candidate is a senior QE leader.",
+   "first_seen": "2026-10-29T03:38:30Z",
+   "last_seen": "2026-10-29T03:38:30Z"
   },
   {
    "id": "gh:airbnb:8238592",
@@ -32,7 +120,40 @@
    "score": 38,
    "reason": "Role is a backend Staff Software Engineer position (Java/distributed systems), not a Quality Engineering leadership role.",
    "first_seen": "2026-10-28T18:48:43Z",
-   "last_seen": "2026-10-28T23:08:30Z"
+   "last_seen": "2026-10-29T03:38:30Z"
+  },
+  {
+   "id": "gh:stripe:8314235",
+   "company": "Stripe",
+   "title": "Software Engineer, Resource Automation",
+   "location": "South San Francisco, CA",
+   "url": "https://stripe.com/jobs/search?gh_jid=8314235",
+   "score": 35,
+   "reason": "The role is for a backend software engineer in Go, whereas the candidate is a senior QE leader.",
+   "first_seen": "2026-10-29T03:38:30Z",
+   "last_seen": "2026-10-29T03:38:30Z"
+  },
+  {
+   "id": "gh:coinbase:8054055",
+   "company": "Coinbase",
+   "title": "Senior IT Automation Engineer",
+   "location": "Remote - India",
+   "url": "https://www.coinbase.com/careers/positions/8054055?gh_jid=8054055",
+   "score": 35,
+   "reason": "Role is an IC IT automation/systems engineering position in India, whereas the candidate is a senior QE leader in the US.",
+   "first_seen": "2026-10-29T03:38:30Z",
+   "last_seen": "2026-10-29T03:38:30Z"
+  },
+  {
+   "id": "gh:doordashusa:8171815",
+   "company": "DoorDash",
+   "title": "Senior Operations Specialist, Engineering Testing",
+   "location": "San francisco, CA; Oakland, CA; Concord, CA",
+   "url": "https://job-boards.greenhouse.io/doordashusa/jobs/8171815",
+   "score": 35,
+   "reason": "Candidate is an executive-level QE leader, whereas this role focuses on operational robotics and autonomous systems testing.",
+   "first_seen": "2026-10-29T03:38:30Z",
+   "last_seen": "2026-10-29T03:38:30Z"
   },
   {
    "id": "gh:airbnb:8207095",
@@ -43,7 +164,7 @@
    "score": 30,
    "reason": "The role requires advanced data science, causal inference, and product analytics expertise, which mismatches the candidate's quality engineering background.",
    "first_seen": "2026-10-28T18:48:43Z",
-   "last_seen": "2026-10-28T23:08:30Z"
+   "last_seen": "2026-10-29T03:38:30Z"
   },
   {
    "id": "gh:pinterest:8258175",
@@ -55,6 +176,72 @@
    "reason": "This is an ML Engineering Director role for ads modeling, mismatching the candidate's Quality Engineering/QA background.",
    "first_seen": "2026-10-28T23:08:30Z",
    "last_seen": "2026-10-28T23:08:30Z"
+  },
+  {
+   "id": "gh:affirm:7994549003",
+   "company": "Affirm",
+   "title": "Compliance Lead, Testing ",
+   "location": "Remote US",
+   "url": "https://job-boards.greenhouse.io/affirm/jobs/7994549003",
+   "score": 25,
+   "reason": "The candidate is a technical Quality Engineering leader, whereas this role focuses on regulatory compliance testing and auditing.",
+   "first_seen": "2026-10-29T03:38:30Z",
+   "last_seen": "2026-10-29T03:38:30Z"
+  },
+  {
+   "id": "gh:reddit:8074860",
+   "company": "Reddit",
+   "title": "Senior, Business Risk & AI Automation",
+   "location": "Remote - British Columbia, Canada",
+   "url": "https://job-boards.greenhouse.io/reddit/jobs/8074860",
+   "score": 25,
+   "reason": "Candidate is a QE leader, but this role is an internal audit and SOX compliance position.",
+   "first_seen": "2026-10-29T03:38:30Z",
+   "last_seen": "2026-10-29T03:38:30Z"
+  },
+  {
+   "id": "gh:machinifyinc:4259840009",
+   "company": "Machinify",
+   "title": "Quality Validation Specialist, Outpatient Coding",
+   "location": "Remote - US",
+   "url": "https://job-boards.greenhouse.io/machinifyinc/jobs/4259840009",
+   "score": 15,
+   "reason": "Candidate is a software QE leader, whereas this role is a medical/outpatient coding validation specialist requiring AHIMA/AAPC certifications.",
+   "first_seen": "2026-10-29T03:38:30Z",
+   "last_seen": "2026-10-29T03:38:30Z"
+  },
+  {
+   "id": "gh:reddit:8074846",
+   "company": "Reddit",
+   "title": "Senior, Business Risk & AI Automation",
+   "location": "Remote - Ontario, Canada",
+   "url": "https://job-boards.greenhouse.io/reddit/jobs/8074846",
+   "score": 15,
+   "reason": "The role is in internal audit, compliance, and SOX testing, which does not match a software quality engineering leadership background.",
+   "first_seen": "2026-10-29T03:38:30Z",
+   "last_seen": "2026-10-29T03:38:30Z"
+  },
+  {
+   "id": "gh:anthropic:5383714008",
+   "company": "Anthropic",
+   "title": "AV Engineer, Platform & Automation",
+   "location": "San Francisco, CA | New York City, NY",
+   "url": "https://job-boards.greenhouse.io/anthropic/jobs/5383714008",
+   "score": 15,
+   "reason": "The candidate is a software quality engineering leader, whereas this role is an AV infrastructure and hardware systems engineering position.",
+   "first_seen": "2026-10-29T03:38:30Z",
+   "last_seen": "2026-10-29T03:38:30Z"
+  },
+  {
+   "id": "gh:doordashusa:8082005",
+   "company": "DoorDash",
+   "title": "Flight Test Engineer, DoorDash Air",
+   "location": "San Francisco, CA",
+   "url": "https://job-boards.greenhouse.io/doordashusa/jobs/8082005",
+   "score": 5,
+   "reason": "The candidate is a software quality engineering leader, whereas this role is for a physical flight test engineer for delivery drones.",
+   "first_seen": "2026-10-29T03:38:30Z",
+   "last_seen": "2026-10-29T03:38:30Z"
   }
  ]
 }
