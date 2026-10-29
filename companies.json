@@ -2,8 +2,6 @@
   "greenhouse": [
     "machinifyinc",
     "qualia",
-    "tacobell",
-    "liveramp",
     "stripe",
     "airbnb",
     "lyft",
@@ -27,10 +25,14 @@
   "ashby": [],
   "adzuna_queries": [
     "director quality engineering",
-    "head of quality assurance",
-    "QA manager software",
+    "director QA",
+    "senior manager quality engineering",
+    "senior manager QA",
+    "QA manager",
+    "quality assurance manager",
     "staff QA engineer",
-    "senior manager quality engineering"
+    "lead SDET",
+    "principal SDET"
   ],
   "adzuna_where": [
     "San Francisco, California",

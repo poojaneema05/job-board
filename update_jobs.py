@@ -23,7 +23,7 @@ ROOT = Path(__file__).parent
 CONFIG = json.loads((ROOT / "companies.json").read_text())
 DATA_PATH = ROOT / "docs" / "jobs.json"
 
-MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.6-flash")
+MODELS = [m.strip() for m in os.environ.get("GEMINI_MODELS", "gemini-2.5-flash-lite,gemini-2.5-flash").split(",") if m.strip()]
 # Free tier allows only a few requests per minute, so score a few jobs per run and pause between calls.
 MAX_SCORE_PER_RUN = int(os.environ.get("MAX_SCORE_PER_RUN", "20"))
 SLEEP_SECONDS = float(os.environ.get("SLEEP_SECONDS", "13"))
@@ -31,20 +31,32 @@ KEEP_DAYS = int(os.environ.get("KEEP_DAYS", "2"))
 HEADERS = {"User-Agent": "personal-job-page/1.0"}
 
 # ---------- filters ----------
-TITLE_FIELD = re.compile(r"\b(quality|qa|sdet|test(ing)?|automation)\b", re.I)
-TITLE_LEVEL = re.compile(
-    r"\b(manager|director|head|lead|staff|principal|architect|vp|vice president)\b", re.I
-)
+# Only these titles are kept:
+#   Director / Senior Manager / Manager + QA, quality engineering, or quality assurance
+#   Principal / Staff / Lead + QA, SDET, quality engineering, or quality assurance
+QA_FIELD = re.compile(r"\b(qa|quality assurance|quality engineering)\b", re.I)
+SDET_FIELD = re.compile(r"\bsdet\b", re.I)
+MANAGER_LEVEL = re.compile(r"\b(director|manager)\b", re.I)  # also covers "Senior Manager"
+IC_LEVEL = re.compile(r"\b(principal|staff|lead)\b", re.I)
 TITLE_EXCLUDE = re.compile(
     r"\b(intern|junior|jr\.?|entry|analyst|technician|gmp|clinical|supplier|"
-    r"manufactur\w*|pharma\w*|laborator\w*|food safety|civil)\b",
+    r"manufactur\w*|pharma\w*|laborator\w*|food safety|civil|"
+    r"product|program|gtm|customer|sales|marketing|finance|p2p|ads|ranking|"
+    r"compliance|legal|recruit\w*|support|account|partner)\b",
     re.I,
 )
 
 
 def title_ok(job):
     t = job["title"]
-    return bool(TITLE_FIELD.search(t) and TITLE_LEVEL.search(t) and not TITLE_EXCLUDE.search(t))
+    if TITLE_EXCLUDE.search(t):
+        return False
+    has_qa = bool(QA_FIELD.search(t))
+    if MANAGER_LEVEL.search(t) and has_qa:
+        return True
+    if IC_LEVEL.search(t) and (has_qa or SDET_FIELD.search(t)):
+        return True
+    return False
 
 
 def location_ok(job):
@@ -78,8 +90,7 @@ def get_json(url, **kwargs):
 
 # ---------- sources ----------
 def fetch_greenhouse(token):
-    data = get_json(
-        f"https://boards-api.greenhouse.io/v1/boards/{token}/jobs", params={"content": "true"})
+    data = get_json(f"https://boards-api.greenhouse.io/v1/boards/{token}/jobs", params={"content": "true"})
     for j in (data or {}).get("jobs", []):
         yield {
             "id": f"gh:{token}:{j['id']}",
@@ -92,8 +103,7 @@ def fetch_greenhouse(token):
 
 
 def fetch_lever(name):
-    data = get_json(
-        f"https://api.lever.co/v0/postings/{name}", params={"mode": "json"})
+    data = get_json(f"https://api.lever.co/v0/postings/{name}", params={"mode": "json"})
     for j in data or []:
         yield {
             "id": f"lv:{name}:{j['id']}",
@@ -122,8 +132,7 @@ def fetch_ashby(name):
 
 
 def fetch_adzuna():
-    app_id, app_key = os.environ.get(
-        "ADZUNA_APP_ID"), os.environ.get("ADZUNA_APP_KEY")
+    app_id, app_key = os.environ.get("ADZUNA_APP_ID"), os.environ.get("ADZUNA_APP_KEY")
     if not (app_id and app_key):
         return
     for query in CONFIG.get("adzuna_queries", []):
@@ -189,8 +198,7 @@ def get_resume():
     path = ROOT / "resume.txt"
     if path.exists():
         return path.read_text()
-    raise SystemExit(
-        "No resume found. Set the RESUME_TEXT secret or add resume.txt.")
+    raise SystemExit("No resume found. Set the RESUME_TEXT secret or add resume.txt.")
 
 
 def score_job(api_key, resume, job):
@@ -202,23 +210,26 @@ def score_job(api_key, resume, job):
     body = {
         "system_instruction": {"parts": [{"text": SYSTEM}]},
         "contents": [{"role": "user", "parts": [{"text": user}]}],
-        "generationConfig": {"temperature": 0, "maxOutputTokens": 2048, "responseMimeType": "application/json"},
+        "generationConfig": {"temperature": 0, "maxOutputTokens": 1024, "responseMimeType": "application/json"},
     }
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent"
-    for attempt in range(4):
-        r = requests.post(
-            url, headers={"x-goog-api-key": api_key}, json=body, timeout=60)
-        if r.status_code in (429, 500, 503):  # rate limited or busy: wait and retry
-            time.sleep(20 * (attempt + 1))
-            continue
-        r.raise_for_status()
-        break
-    else:
-        raise RuntimeError("Gemini kept returning rate-limit or server errors")
-    parts = r.json()["candidates"][0]["content"]["parts"]
-    text = "".join(p.get("text", "") for p in parts)
-    data = json.loads(re.search(r"\{.*\}", text, re.S).group(0))
-    return max(0, min(100, int(data["score"]))), str(data.get("reason", ""))[:200]
+    last_error = "no attempt made"
+    for model in MODELS:  # try each model in turn if one is rate limited or unavailable
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+        for attempt in range(2):
+            r = requests.post(url, headers={"x-goog-api-key": api_key}, json=body, timeout=60)
+            if r.status_code == 429 or r.status_code >= 500:  # rate limited or busy
+                last_error = f"{model}: HTTP {r.status_code} {r.text[:300]}"
+                time.sleep(15 * (attempt + 1))
+                continue
+            if r.status_code in (400, 403, 404):  # bad model or key: try the next model
+                last_error = f"{model}: HTTP {r.status_code} {r.text[:300]}"
+                break
+            r.raise_for_status()
+            parts = r.json()["candidates"][0]["content"]["parts"]
+            text = "".join(p.get("text", "") for p in parts)
+            data = json.loads(re.search(r"\{.*\}", text, re.S).group(0))
+            return max(0, min(100, int(data["score"]))), str(data.get("reason", ""))[:200]
+    raise RuntimeError(last_error)
 
 
 # ---------- main ----------
@@ -231,7 +242,6 @@ def parse(s):
 
 
 def main():
-    print("Starting job update...", flush=True)
     dry = "--dry-run" in sys.argv
     now = datetime.now(timezone.utc)
     stored = json.loads(DATA_PATH.read_text()) if DATA_PATH.exists() else {}
@@ -248,25 +258,29 @@ def main():
     to_score = []
     for j in live:
         if j["id"] in cache:
-            cache[j["id"]].update(last_seen=iso(
-                now), url=j["url"], title=j["title"], location=j["location"])
+            cache[j["id"]].update(last_seen=iso(now), url=j["url"], title=j["title"], location=j["location"])
         else:
             to_score.append(j)
     print(f"{len(live)} matching postings, {len(to_score)} new to score")
 
     if dry:
         for j in to_score:
-            print(
-                f"- {j['company']} | {j['title']} | {j['location']} | {j['url']}")
+            print(f"- {j['company']} | {j['title']} | {j['location']} | {j['url']}")
         return
 
     if to_score:
         client, resume = make_client(), get_resume()
+        failures = 0
         for j in to_score[:MAX_SCORE_PER_RUN]:
             try:
                 score, reason = score_job(client, resume, j)
+                failures = 0
             except Exception as exc:
+                failures += 1
                 print(f"  scoring failed for {j['title']}: {exc}")
+                if failures >= 3:
+                    print("  3 failures in a row; stopping early. Jobs will be retried next hour.")
+                    break
                 continue  # retried next hour
             time.sleep(SLEEP_SECONDS)
             cache[j["id"]] = {
@@ -278,8 +292,7 @@ def main():
     cutoff = now - timedelta(days=KEEP_DAYS)
     jobs = [j for j in cache.values() if parse(j["last_seen"]) >= cutoff]
     jobs.sort(key=lambda j: (j["score"], j["first_seen"]), reverse=True)
-    DATA_PATH.write_text(json.dumps(
-        {"updated": iso(now), "jobs": jobs}, indent=1))
+    DATA_PATH.write_text(json.dumps({"updated": iso(now), "jobs": jobs}, indent=1))
     print(f"Wrote {len(jobs)} jobs")
 
 
