@@ -1,6 +1,17 @@
 {
- "updated": "2026-10-29T03:12:49Z",
+ "updated": "2026-10-29T03:21:34Z",
  "jobs": [
+  {
+   "id": "gh:coinbase:8241752",
+   "company": "Coinbase",
+   "title": "Staff Software Engineer, Mobile QA",
+   "location": "Remote - USA",
+   "url": "https://www.coinbase.com/careers/positions/8241752?gh_jid=8241752",
+   "score": 75,
+   "reason": "Strong QE leadership and mobile experience, but role requires heavy hands-on Swift/Kotlin coding as a Staff IC.",
+   "first_seen": "2026-10-29T03:21:34Z",
+   "last_seen": "2026-10-29T03:21:34Z"
+  },
   {
    "id": "gh:airbnb:8238604",
    "company": "Airbnb",
